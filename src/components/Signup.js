@@ -17,8 +17,8 @@ function Signup() {
         try {
             const userData = await authService.createAccount(data)
             if (userData) {
-                const userData = await authService.getCurrentUser()
-                if(userData) dispatch(login(userData));
+                const currentUser = await authService.getCurrentUser()
+                if(currentUser) dispatch(login(currentUser));
                 navigate("/")
             }
         } catch (error) {
@@ -28,7 +28,7 @@ function Signup() {
 
   return (
     <div className="flex items-center justify-center">
-            <div className={`mx-auto w-full max-w-lg bg-gray-100 rounded-xl p-10 border border-black/10`}>
+            <div className={"mx-auto w-full max-w-lg bg-gray-100 rounded-xl p-10 border border-black/10"}>
             <div className="mb-2 flex justify-center">
                     <span className="inline-block w-full max-w-[100px]">
                         <Logo width="100%" />
@@ -52,7 +52,7 @@ function Signup() {
                         label="Full Name: "
                         placeholder="Enter your full name"
                         {...register("name", {
-                            required: true,
+                            required: "Full name is required",
                         })}
                         />
                         <Input
@@ -60,7 +60,7 @@ function Signup() {
                         placeholder="Enter your email"
                         type="email"
                         {...register("email", {
-                            required: true,
+                            required: 'Email is required',
                             validate: {
                                 matchPatern: (value) => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) ||
                                 "Email address must be a valid address",
@@ -72,7 +72,7 @@ function Signup() {
                         type="password"
                         placeholder="Enter your password"
                         {...register("password", {
-                            required: true})}
+                            required: 'Password is required'})}
                         />
                         <Button type="submit" className="w-full">
                             Create Account

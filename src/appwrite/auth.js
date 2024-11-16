@@ -1,5 +1,6 @@
-import conf from "../conf/conf";
-import { Client, Account, ID} from 'appwrite';
+import { nanoid } from '@reduxjs/toolkit';
+import conf from '../conf/conf.js';
+import { Client, Account } from "appwrite";
 
 export class AuthService {
     client = new Client();
@@ -12,45 +13,50 @@ export class AuthService {
         this.account = new Account(this.client);
     }
 
-    async createAccount({email, password, name}) {
+    async createAccount({ email, password, name }) {
         try {
-            const userAccount = await this.account.create(ID.unique(), email, password, name);
-            if (userAccount) {
-                this.login({email, password})
-            } else {
-                return userAccount;
-            }
+            const userId = nanoid(24); // Replace this if needed
+            console.log("Generated userId:", userId);
+            await this.account.create(userId, email, password, name);
+            return this.login({ email, password });
         } catch (error) {
+            console.error("AuthService :: createAccount :: error", error.message);
+            console.error("Error details:", error.response); // Log additional details
+            throw error;
+        }
+    }
+    
+    
+    
+
+    async login({ email, password }) {
+        try {
+            return await this.account.createSession(email, password);
+        } catch (error) {
+            console.error("AuthService :: login :: error", error);
+            throw error;
+        }
+    }
+    
+
+    async getCurrentUser() {
+        try {
+            return await this.account.get();
+        } catch (error) {
+            console.error("AuthService :: getCurrentUser :: error", error);
             throw error;
         }
     }
 
-    async login({email, password}) {
+    async logout() {
         try {
-            return await this.account.createEmailPasswordSession(email, password);
+            await this.account.deleteSessions();
         } catch (error) {
-            throw error
-        }
-    }
-
-    async getCurrentUser(){
-        try {
-            return await this.account.get();
-        } catch (error) {
-            console.log("Appwrite service error");
-        }
-        return null;
-    }
-
-    async logout({email, password}) {
-        try {
-            await this.account.deleteSessions(email, password)
-        } catch (error) {
-            console.log("Appwrite error");
+            console.error("AuthService :: logout :: error", error);
+            throw error;
         }
     }
 }
 
-const authService = new AuthService();  
-
-export default authService; 
+const authService = new AuthService();
+export default authService;

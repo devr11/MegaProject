@@ -2,13 +2,14 @@
   "name": "react-project",
   "version": "0.1.0",
   "private": true,
+  "proxy": "https://localhost:3000/",
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.7",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "@tinymce/tinymce-react": "^5.1.1",
-    "appwrite": "^15.0.0",
+    "appwrite": "^16.0.2",
     "html-react-parser": "^5.1.15",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -19,6 +20,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -43,7 +46,11 @@
     ]
   },
   "devDependencies": {
+    "@eslint/js": "^9.15.0",
     "autoprefixer": "^10.4.20",
+    "eslint": "^8.57.1",
+    "eslint-plugin-react": "^7.37.2",
+    "globals": "^15.12.0",
     "postcss": "^8.4.47",
     "tailwindcss": "^3.4.14"
   }
